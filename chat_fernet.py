@@ -34,7 +34,7 @@ class Chat:
         # user exits the application
         self.running = True
         key = Fernet.generate_key()
-        
+        fT = Fernet(key)
 
     @staticmethod
     def on_connect(client, userdata, flags, rc):
@@ -107,6 +107,7 @@ class Chat:
                 # Check if there is an input from the user
                 # If not we will get a queue.Empty exception
                 msg_to_send = self.input_queue.get_nowait()
+                token = self.fT.encrypt(msg_to_send)
                 # If we reach this point we have a message
 
                 # Check if the user wants to exit the application
