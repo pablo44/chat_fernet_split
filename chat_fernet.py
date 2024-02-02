@@ -108,6 +108,7 @@ class Chat:
                 # If not we will get a queue.Empty exception
                 msg_to_send = self.input_queue.get_nowait()
                 token = self.fT.encrypt(msg_to_send)
+                self.token = token
                 # If we reach this point we have a message
 
                 # Check if the user wants to exit the application
