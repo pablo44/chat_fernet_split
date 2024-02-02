@@ -62,7 +62,7 @@ class Chat:
         #TODO:  När vi tar emot ett meddelande.Avkoda meddelandet (message) och skriv ut det.Skriv bara ut meddelandet om det börjar med någon annans användarnamn
         #(Dvs. Skriv inte ut meddelanden du själv skickat)
 
-        
+        message= self.fT.decrypt(self.token)
         decoded_msg = message.payload.decode(encoding ='UTF-8', errors ='strict')
         msg_sender =message.topic.split('/')[-1]
         if msg_sender != self.username:
