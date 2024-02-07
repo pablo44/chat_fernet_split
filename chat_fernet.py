@@ -61,7 +61,7 @@ class Chat:
         
         #TODO:  När vi tar emot ett meddelande.Avkoda meddelandet (message) och skriv ut det.Skriv bara ut meddelandet om det börjar med någon annans användarnamn
         #(Dvs. Skriv inte ut meddelanden du själv skickat)
-
+# here we decrypt with fernet key , the same used to encrypt, symetry
         message= self.fT.decrypt(self.token)
         decoded_msg = message.payload.decode(encoding ='UTF-8', errors ='strict')
         msg_sender =message.topic.split('/')[-1]
@@ -106,6 +106,7 @@ class Chat:
             try:
                 # Check if there is an input from the user
                 # If not we will get a queue.Empty exception
+                # here we create a variable token that is assigned encrypted message to it, than this one is assigne to class self.token
                 msg_to_send = self.input_queue.get_nowait()
                 token = self.fT.encrypt(msg_to_send)
                 self.token = token
