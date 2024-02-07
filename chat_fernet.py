@@ -3,6 +3,7 @@ import random
 import threading
 import queue
 from Cryptography.fernet import Fernet
+import base64
 
 
 CLIENT_ID = f'kyh-mqtt-{random.randint(0, 1000)}'
@@ -63,6 +64,7 @@ class Chat:
         #(Dvs. Skriv inte ut meddelanden du själv skickat)
 # here we decrypt with fernet key , the same used to encrypt, symetry
         message= self.fT.decrypt(self.token)
+        #here decoding utf-8 string into bytes like message in order to get it decryped by fT(key)
         decoded_msg = message.payload.decode(encoding ='UTF-8', errors ='strict')
         msg_sender =message.topic.split('/')[-1]
         if msg_sender != self.username:
@@ -109,9 +111,11 @@ class Chat:
                 # here we create a variable token that is assigned encrypted message to it, than this one is assigne to class self.token
                 msg_to_send = self.input_queue.get_nowait()
                 token = self.fT.encrypt(msg_to_send)
-                self.token = token
+                #now we take encryped token msg converting it to base64 encoded string and than decoding it with python inbuild decode() to utf-8 encoded string
+                self.token = base64.b64encode(token).decode('utf-8')
                 # If we reach this point we have a message
-
+                self.client.publish(self.topic, self.token)
+                
                 # Check if the user wants to exit the application
                 if msg_to_send.lower() == "quit":
 
