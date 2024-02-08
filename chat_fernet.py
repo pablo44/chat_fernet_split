@@ -112,7 +112,7 @@ class Chat:
                 msg_to_send = self.input_queue.get_nowait()
                 token = self.fT.encrypt(msg_to_send)
                 #now we take encryped token msg converting it to base64 encoded string and than decoding it with python inbuild decode() to utf-8 encoded string
-                self.token = base64.b64encode(token).decode('utf-8')
+                self.token = base64.urlsafe_b64encode(token).decode('utf-8')
                 # If we reach this point we have a message
                 self.client.publish(self.topic, self.token)
                 
